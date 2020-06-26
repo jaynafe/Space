@@ -14,8 +14,8 @@ class Pony(object):
         self.ponyX = 120
         self.ponyY = 350
         self.jump = False
-        self.jumpSpeed = 10
-        self.gravity = 5
+        self.jumpSpeed = 15
+        self.gravity = 1
         self.dead = False
 
 
@@ -26,7 +26,7 @@ class Pony(object):
            self.jumpSpeed -= 1
            self.ponyY -= self.jumpSpeed
         else :
-           self.gravity += 0.2
+           self.gravity += 0
            self.ponyY += self.gravity
         self.ponyRect[1] = self.ponyY
 
@@ -109,18 +109,48 @@ if __name__ == '__main__':
     Pony = Pony()
     Tube = Tube()
     score = 0 #分數初始值為0
-
+    
     while True:
         clock.tick(60) #每秒60次
-
+        #取得按鍵壓下
+        pressed = pygame.key.get_pressed()
         #迴圈
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            if (event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN) and not Pony.dead :
+                #如果按W且玩家沒死
+            if pressed[pygame.K_w] and not Pony.dead :
+                #跳躍
                 Pony.jump = True
-                Pony.gravity = 5
+                #重力值
+                Pony.gravity = 1
+                #跳躍速度
                 Pony.jumpSpeed = 10
+                #如果按A且玩家沒死
+            if pressed[pygame.K_a] and not Pony.dead :
+                #左移10
+                Pony.ponyX -= 10
+                #跳躍
+                Pony.jump = True
+                #重力
+                Pony.gravity = 1
+                #跳躍速度
+                Pony.jumpSpeed = 10
+                #如果按D且玩家沒死
+            if pressed[pygame.K_d] and not Pony.dead :
+                #右移10
+                Pony.ponyX += 10
+                #跳躍
+                Pony.jump = True
+                #重力
+                Pony.gravity = 1
+                #跳躍速度
+                Pony.jumpSpeed = 10
+                #如果按S且玩家沒死
+            if pressed[pygame.K_s] and not Pony.dead :
+                #下移10
+                Pony.ponyY -= 10
+                Pony.jump = True
 
         background = pygame.image.load("assets/background.png")
         if checkDead() :
